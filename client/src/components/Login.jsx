@@ -13,11 +13,12 @@ function Login() {
     try {
       e.preventDefault();
 
-      const { data } = await axios.post(
-  `${import.meta.env.VITE_BACKEND_URL}/user/${state}`,
+ const { data } = await axios.post(
+  `${import.meta.env.VITE_BACKEND_URL}/api/user/${state}`,
   { name, email, password },
   { withCredentials: true }
 );
+
 
 
       if (data.success) {
