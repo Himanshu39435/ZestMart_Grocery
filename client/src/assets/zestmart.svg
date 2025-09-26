@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 30">
+  <defs>
+    <linearGradient id="leafGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4fbf8b;stop-opacity:1"></stop>
+      <stop offset="100%" style="stop-color:#2a7e58;stop-opacity:1"></stop>
+    </linearGradient>
+    <linearGradient id="cartGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#2a7e58;stop-opacity:1"></stop>
+      <stop offset="100%" style="stop-color:#4fbf8b;stop-opacity:1"></stop>
+    </linearGradient>
+  </defs>
+
+  <!-- Leaf -->
+  <path d="M20,10 C18,6 22,2 28,5 C30,6 31,9 29,11 C27,13 23,13 20,10 Z" fill="url(#leafGradient)"></path>
+
+  <!-- Swirl under text -->
+  <path d="M 5,25 C 20,15 50,15 65,24 C 70,21 85,22 95,27" fill="none" stroke="url(#leafGradient)" stroke-width="2.5"></path>
+
+  <!-- Zest -->
+  <text x="30" y="20" font-family="Outfit, sans-serif" font-size="14" font-weight="700" fill="#2a7e58">Zest</text>
+
+  <!-- Mart -->
+  <text x="60" y="20" font-family="Outfit, sans-serif" font-size="14" font-weight="700" fill="#4fbf8b">Mart</text>
+
+  <!-- Cart Icon -->
+  <g stroke="url(#cartGradient)" stroke-width="1" fill="none">
+    <path d="M85,16 H98 L100,12 H83 Z"></path>
+    <circle cx="88" cy="20" r="1.5"></circle>
+    <circle cx="95" cy="20" r="1.5"></circle>
+  </g>
+
+  <!-- Sparkle near 't' -->
+  <g fill="#FFD700">
+    <path d="M103 10 L104 12 L106 12 L105 14 L106 16 L104 16 L103 18 L102 16 L100 16 L101 14 L100 12 L102 12 Z"></path>
+  </g>
+</svg>
