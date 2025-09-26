@@ -2,12 +2,12 @@ import express from 'express';
 import { isAuth, login, logout, register } from '../controllers/UserController.js';
 import  authUser  from '../middlewares/authUser.js'
 
-const userRouter = express.Router();
+const UserRouter = express.Router();
 
-userRouter.post('/register', register )
-userRouter.post('/login', login )
-userRouter.get('/is-auth', authUser, isAuth )
-userRouter.get('/logout', authUser ,logout)
+UserRouter.post('/register', register )
+UserRouter.post('/login', login )
+UserRouter.get('/is-auth', authUser, isAuth )
+UserRouter.get('/logout', authUser ,logout)
 
 
 export default UserRouter;
