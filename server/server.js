@@ -16,44 +16,47 @@ import { stripeWebhooks } from "./controllers/OrderController.js";
 const app = express();
 const port = process.env.PORT || 4000;
 
-// Allowed multiple origins
+// ✅ Allowed origins (local + live frontend)
 const allowedOrigins = [
-  'http://localhost:5173', 
-  'http://localhost:4000', 
-  'https://zest-mart-grocery.vercel.app' // Vercel ka live URL
+  "http://localhost:5173",
+  "http://localhost:4000",
+  "https://zestmart-grocery-client.onrender.com" // Render frontend URL
 ];
 
-app.post('/stripe', express.raw({type: 'application/json'}), stripeWebhooks);
+app.post("/stripe", express.raw({ type: "application/json" }), stripeWebhooks);
 
-// MiddleWare configuration
-
+// Middleware
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: allowedOrigins, credentials: true }));
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
 
- app.get("/", (req, res) => {
-   res.send("API is Working.");
- });
- 
- app.use("/api/user", UserRouter);
- app.use("/api/seller", SellerRouter);
- app.use("/api/product", ProductRouter);
- app.use("/api/cart", CartRouter);
- app.use("/api/address", AddressRouter);
- app.use("/api/order", OrderRouter);
- 
+// Default route
+app.get("/", (req, res) => {
+  res.send("API is Working.");
+});
 
+// Routes
+app.use("/api/user", UserRouter);
+app.use("/api/seller", SellerRouter);
+app.use("/api/product", ProductRouter);
+app.use("/api/cart", CartRouter);
+app.use("/api/address", AddressRouter);
+app.use("/api/order", OrderRouter);
 
- const startServer = async () => {
-   try {
-     await connectDB();
-     await connectCloudinary();
-     app.listen(port, () => {
-       console.log("Server is running on port", port);
-     });
-   } catch (error) {
-     console.log(error.message);
-   }
- };
- 
- startServer();
+// Start server
+const startServer = async () => {
+  try {
+    await connectDB();
+    await connectCloudinary();
+    app.listen(port, () => {
+      console.log("✅ Server is running on port", port);
+    });
+  } catch (error) {
+    console.log("❌ Error starting server:", error.message);
+  }
+};
+
+startServer();
