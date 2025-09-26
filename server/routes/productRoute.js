@@ -4,7 +4,7 @@ import {
   changeStock,
   productById,
   productList,
-} from "../controllers/productController.js";
+} from "../controllers/ProductController.js";
 import { upload } from "../configs/multer.js";
 import authSeller from "../middlewares/authSeller.js";
 

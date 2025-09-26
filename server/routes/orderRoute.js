@@ -5,7 +5,7 @@ import {
   getUserOrders,
   placeOrderStripe,
   
-} from "../controllers/orderController.js";
+} from "../controllers/OrderController.js";
 import authUser from "../middlewares/authUser.js";
 import authSeller from "../middlewares/authSeller.js";
 const orderRouter = express.Router();
