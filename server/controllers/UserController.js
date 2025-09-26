@@ -2,6 +2,7 @@ import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+// ---------------- REGISTER ----------------
 export const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -32,10 +33,12 @@ export const register = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+      secure: true,          // Always true on Render (HTTPS)
+      sameSite: "none",      // Required for cross-origin cookies
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      path: "/",
     });
+
     return res.json({
       success: true,
       message: "User registered successfully",
@@ -47,6 +50,7 @@ export const register = async (req, res) => {
   }
 };
 
+// ---------------- LOGIN ----------------
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -76,13 +80,15 @@ export const login = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      secure: true,
+      sameSite: "none",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: "/",
     });
+
     return res.json({
       success: true,
-      message: "User registered successfully",
+      message: "Login successful",
       user: { email: user.email, name: user.name },
     });
   } catch (error) {
@@ -91,14 +97,16 @@ export const login = async (req, res) => {
   }
 };
 
+// ---------------- IS AUTH ----------------
 export const isAuth = async (req, res) => {
   try {
-    const { id: userId } = req.user; 
+    const { id: userId } = req.user;
 
     if (!userId) {
-        return res.json({ success: false, message: "Unauthorized" });
+      return res.json({ success: false, message: "Unauthorized" });
     }
-    const user = await User.findById(userId).select("-password ");
+
+    const user = await User.findById(userId).select("-password");
 
     return res.json({ success: true, user });
   } catch (error) {
@@ -107,16 +115,14 @@ export const isAuth = async (req, res) => {
   }
 };
 
+// ---------------- LOGOUT ----------------
 export const logout = async (req, res) => {
   try {
-  
     res.clearCookie("token", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      secure: true,
+      sameSite: "none",
       path: "/",
-
     });
 
     return res.json({ success: true, message: "Logged out successfully" });
