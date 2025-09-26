@@ -9,6 +9,4 @@ export default defineConfig({
     tailwindcss(),
   ],
   
-  // Yeh line add karni hai:
-  base: "/ZestMart_Grocery/", 
 })
