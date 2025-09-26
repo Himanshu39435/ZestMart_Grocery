@@ -23,15 +23,17 @@ const allowedOrigins = [
   "https://zestmart-grocery-client.onrender.com" // Render frontend URL
 ];
 
+// Stripe webhook BEFORE express.json()
 app.post("/stripe", express.raw({ type: "application/json" }), stripeWebhooks);
 
-// Middleware
+// Middlewares
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
   origin: allowedOrigins,
   credentials: true
 }));
+
 
 // Default route
 app.get("/", (req, res) => {
