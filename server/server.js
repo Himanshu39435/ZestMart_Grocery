@@ -31,16 +31,14 @@ app.post("/stripe", express.raw({ type: "application/json" }), stripeWebhooks);
 // ✅ ORDER FIXED HERE
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: allowedOrigins,
     credentials: true,
   })
 );
+
+app.use(cookieParser());
+app.use(express.json());
+
 
 
 // Default route
