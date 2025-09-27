@@ -20,26 +20,32 @@ const port = process.env.PORT || 4000;
 const allowedOrigins = [
   "http://localhost:5173",
   "https://zestmart-grocery-client.onrender.com",
-  "https://zestmart-grocery.onrender.com"   // ✅ यह add करो
+  "https://zestmart-grocery.onrender.com",
 ];
 
 
 
 // Stripe webhook BEFORE express.json()
+// Stripe webhook BEFORE express.json()
 app.post("/stripe", express.raw({ type: "application/json" }), stripeWebhooks);
 
-// ✅ ORDER FIXED HERE
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        console.log("❌ Blocked by CORS:", origin);
+        return callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
 
 app.use(cookieParser());
 app.use(express.json());
-
-
 
 // Default route
 app.get("/", (req, res) => {
