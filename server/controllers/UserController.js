@@ -128,10 +128,12 @@ export const isAuth = async (req, res) => {
 // ---------------- LOGOUT ----------------
 export const logout = async (req, res) => {
   try {
+    const isProduction = process.env.NODE_ENV === "production";
+
     res.clearCookie("token", {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      secure: isProduction,       // ✅ Render → true, localhost → false
+      sameSite: isProduction ? "none" : "lax",
       path: "/",
     });
 
@@ -141,3 +143,4 @@ export const logout = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+
