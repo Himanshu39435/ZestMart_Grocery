@@ -16,34 +16,23 @@ import { stripeWebhooks } from "./controllers/OrderController.js";
 const app = express();
 const port = process.env.PORT || 4000;
 
-// ✅ Allowed origins — ✅ सिर्फ frontend वालों को allow करो
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://zestmart-grocery-client.onrender.com",
-];
-
-// ✅ Stripe webhook को express.json() से पहले रखना जरूरी है
-app.post("/stripe", express.raw({ type: "application/json" }), stripeWebhooks);
-
-// ✅ CORS middleware
+// ✅ 1) सबसे पहले CORS
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        console.log("❌ Blocked by CORS:", origin);
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: [
+      "http://localhost:5173",
+      "https://zestmart-grocery-client.onrender.com",
+    ],
     credentials: true,
   })
 );
 
-app.use(cookieParser());
-app.use(express.json());
+// ✅ 2) Stripe raw body ऊपर ही
+app.post("/stripe", express.raw({ type: "application/json" }), stripeWebhooks);
 
+// ✅ 3) फिर JSON + Cookies
+app.use(express.json());
+app.use(cookieParser());
 // ✅ Test route
 app.get("/", (req, res) => {
   res.send("API is Working.");
