@@ -3,12 +3,14 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
 
-export const AppContext = createContext();
-
-// Base URL for axios requests
+// ✅ Set base URL from environment variable
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
-// Set withCredentials to true for cross-origin requests
+
+// ✅ Allow sending cookies with requests
 axios.defaults.withCredentials = true;
+
+
+export const AppContext = createContext();
 
 export const AppContextProvider = ({ children }) => {
   const currency = import.meta.env.VITE_CURRENCY;
@@ -51,7 +53,6 @@ export const AppContextProvider = ({ children }) => {
 
   const getCartCount = () => {
     let totalCount = 0;
-
     for (const item in cartItems) {
       totalCount += cartItems[item];
     }
@@ -60,17 +61,14 @@ export const AppContextProvider = ({ children }) => {
 
   const getCartAmount = () => {
     let totalAmount = 0;
-
     for (const items in cartItems) {
       let itemInfo = products.find(
         (singleProduct) => singleProduct._id === items
       );
-
-      if (cartItems[items] > 0) {
+      if (cartItems[items] > 0 && itemInfo) {
         totalAmount += itemInfo.offerPrice * cartItems[items];
       }
     }
-
     return Math.floor(totalAmount * 100) / 100;
   };
 
@@ -103,7 +101,7 @@ export const AppContextProvider = ({ children }) => {
     let cartData = structuredClone(cartItems);
     cartData[itemId] = quantity;
     setCartItems(cartData);
-    toast.success("Card Updated");
+    toast.success("Cart Updated");
   };
 
   const removeFromCart = (itemId) => {
@@ -124,11 +122,10 @@ export const AppContextProvider = ({ children }) => {
     fetchProducts();
   }, []);
 
-  useEffect(()=>{
-    const updateCart = async ()=>{
+  useEffect(() => {
+    const updateCart = async () => {
       try {
-        const { data } = await axios.post("/api/cart/update", {cartItems})
-
+        const { data } = await axios.post("/api/cart/update", { cartItems });
         if (!data.success) {
           toast.error(data.message);
         }
@@ -136,11 +133,11 @@ export const AppContextProvider = ({ children }) => {
         console.log(error.message);
         toast.error("Something went wrong, please try again later.");
       }
-    }
+    };
     if (user) {
       updateCart();
     }
-  },[cartItems])
+  }, [cartItems]);
 
   const value = {
     navigate,
@@ -164,6 +161,7 @@ export const AppContextProvider = ({ children }) => {
     fetchProducts,
     setCartItems,
   };
+
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 

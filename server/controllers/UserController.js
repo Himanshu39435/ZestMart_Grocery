@@ -31,13 +31,16 @@ export const register = async (req, res) => {
       expiresIn: "7d",
     });
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,          // Always true on Render (HTTPS)
-      sameSite: "none",      // Required for cross-origin cookies
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-      path: "/",
-    });
+    const isProduction = process.env.NODE_ENV === "production";
+
+res.cookie("token", token, {
+  httpOnly: true,
+  secure: isProduction,     // ✅ Production पर ही true
+  sameSite: isProduction ? "none" : "lax",
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+  path: "/",
+});
+
 
     return res.json({
       success: true,
@@ -49,6 +52,7 @@ export const register = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+
 
 // ---------------- LOGIN ----------------
 export const login = async (req, res) => {
@@ -78,10 +82,12 @@ export const login = async (req, res) => {
       expiresIn: "7d",
     });
 
+    const isProduction = process.env.NODE_ENV === "production";
+
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
       path: "/",
     });
@@ -91,11 +97,13 @@ export const login = async (req, res) => {
       message: "Login successful",
       user: { email: user.email, name: user.name },
     });
+
   } catch (error) {
     console.log(error.message);
     res.json({ success: false, message: error.message });
   }
 };
+
 
 // ---------------- IS AUTH ----------------
 export const isAuth = async (req, res) => {

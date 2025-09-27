@@ -27,12 +27,13 @@ const allowedOrigins = [
 app.post("/stripe", express.raw({ type: "application/json" }), stripeWebhooks);
 
 // Middlewares
-app.use(express.json());
-app.use(cookieParser());
+
 app.use(cors({
   origin: allowedOrigins,
   credentials: true
 }));
+app.use(express.json());
+app.use(cookieParser());
 
 
 // Default route
