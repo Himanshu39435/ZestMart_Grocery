@@ -16,28 +16,25 @@ import { stripeWebhooks } from "./controllers/OrderController.js";
 const app = express();
 const port = process.env.PORT || 4000;
 
-// ✅ Allowed origins (local + live frontend)
+// ✅ Allowed origins — ✅ सिर्फ frontend वालों को allow करो
 const allowedOrigins = [
   "http://localhost:5173",
   "https://zestmart-grocery-client.onrender.com",
-  "https://zestmart-grocery.onrender.com",
 ];
 
-
-
-// Stripe webhook BEFORE express.json()
-// Stripe webhook BEFORE express.json()
+// ✅ Stripe webhook को express.json() से पहले रखना जरूरी है
 app.post("/stripe", express.raw({ type: "application/json" }), stripeWebhooks);
 
+// ✅ CORS middleware
 app.use(
   cors({
     origin: function (origin, callback) {
       if (!origin) return callback(null, true);
       if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
+        callback(null, true);
       } else {
         console.log("❌ Blocked by CORS:", origin);
-        return callback(new Error("Not allowed by CORS"));
+        callback(new Error("Not allowed by CORS"));
       }
     },
     credentials: true,
@@ -47,12 +44,12 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 
-// Default route
+// ✅ Test route
 app.get("/", (req, res) => {
   res.send("API is Working.");
 });
 
-// Routes
+// ✅ Routes
 app.use("/api/user", UserRouter);
 app.use("/api/seller", SellerRouter);
 app.use("/api/product", ProductRouter);
@@ -60,7 +57,7 @@ app.use("/api/cart", CartRouter);
 app.use("/api/address", AddressRouter);
 app.use("/api/order", OrderRouter);
 
-// Start server
+// ✅ Server start
 const startServer = async () => {
   try {
     await connectDB();
