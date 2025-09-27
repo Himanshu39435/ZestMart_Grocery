@@ -16,6 +16,10 @@ import { stripeWebhooks } from "./controllers/OrderController.js";
 const app = express();
 const port = process.env.PORT || 4000;
 
+console.log(process.env.NODE_ENV);
+console.log(process.env.JWT_SECRET);
+
+
 // ✅ 1) सबसे पहले CORS
 app.use(
   cors({
