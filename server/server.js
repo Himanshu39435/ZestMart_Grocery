@@ -25,7 +25,6 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://zestmart-grocery-client.onrender.com",
     ],
     credentials: true,
   })
