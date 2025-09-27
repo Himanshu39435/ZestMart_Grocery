@@ -85,18 +85,21 @@ export const login = async (req, res) => {
       expiresIn: "7d",
     });
 
+    // ✅ 👉 Console log #1 (Token Check)
+    console.log("✅ Login successful, token:", token);
 
-const isProduction = process.env.NODE_ENV === "production";
+    const isProduction = process.env.NODE_ENV === "production";
 
-res.cookie("token", token, {
-  httpOnly: true,
-  secure: isProduction,
-  sameSite: isProduction ? "none" : "lax",
-  maxAge: 7 * 24 * 60 * 60 * 1000,
-  path: "/",
-  // ❌ DO NOT SET domain manually
-});
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: "/",
+    });
 
+    // ✅ 👉 Console log #2 (Cookie Sent Confirmation)
+    console.log("✅ Cookie sent to browser");
 
     return res.json({
       success: true,

@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
 
-// ✅ Set base URL from environment variable
-axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
+import axios from "axios";
 
-// ✅ Allow sending cookies with requests
-axios.defaults.withCredentials = true;
+const api = axios.create({
+  baseURL: import.meta.env.VITE_BACKEND_URL,
+  withCredentials: true,    // ✅ जरुरी
+});
 
 
 export const AppContext = createContext();
