@@ -23,33 +23,37 @@ export const AppContextProvider = ({ children }) => {
   const [searchQuery, setSearchQuery] = useState({});
 
   const fetchUser = async () => {
-    try {
-      const { data } = await axios.get("/api/user/is-auth");
-      if (data.success) {
-        setUser(data.user);
-        setCartItems(data.user.cartItems);
-      } else {
-        toast.error(data.message);
-      }
-    } catch (error) {
-      console.log(error.message);
-      toast.error("Something went wrong, please try again later.");
+  try {
+    const { data } = await axios.get("/api/user/is-auth", {
+      withCredentials: true
+    });
+    if (data.success) {
+      setUser(data.user);
+      setCartItems(data.user.cartItems);
+    } else {
+      toast.error(data.message);
     }
-  };
+  } catch (error) {
+    console.log(error.message);
+    toast.error("Something went wrong, please try again later.");
+  }
+};
 
-  const fetchSeller = async () => {
-    try {
-      const { data } = await axios.get("/api/seller/is-auth");
-
-      if (data.success) {
-        setIsSeller(true);
-      } else {
-        setIsSeller(false);
-      }
-    } catch (error) {
-      console.log(error.message);
+const fetchSeller = async () => {
+  try {
+    const { data } = await axios.get("/api/seller/is-auth", {
+      withCredentials: true
+    });
+    if (data.success) {
+      setIsSeller(true);
+    } else {
+      setIsSeller(false);
     }
-  };
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 
   const getCartCount = () => {
     let totalCount = 0;
